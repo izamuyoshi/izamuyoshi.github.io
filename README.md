@@ -1,0 +1,1 @@
+# izamuyoshi.github.io
