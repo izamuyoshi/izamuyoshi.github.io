@@ -3,103 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>izamuyoshi | Официальный сайт</title>
+    <title>Качество электроэнергии | Мониторинг</title>
     <style>
-        /* Базовые настройки для всей страницы */
+        /* Общие стили и футуристичный темный фон */
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #0d1117; /* Темный фон в стиле GitHub */
-            color: #c9d1d9; /* Светло-серый текст */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            color: #e2e8f0;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
         }
 
-        /* Контейнер-карточка по центру */
-        .container {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 40px;
-            max-width: 450px;
-            width: 90%;
+        header {
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+            padding: 20px;
         }
 
-        /* Аватарка или круглая заглушка */
-        .avatar {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(45deg, #1f6feb, #238636);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            color: white;
-            font-weight: bold;
-        }
-
+        /* Светящийся заголовок */
         h1 {
-            color: #f0f6fc;
+            color: #38bdf8;
+            font-size: 2.5rem;
             margin: 0 0 10px 0;
-            font-size: 1.8rem;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
 
         .subtitle {
-            color: #8b949e;
-            font-size: 1rem;
-            margin-bottom: 25px;
+            color: #94a3b8;
+            font-size: 1.1rem;
         }
 
-        /* Стили для кнопок-ссылок */
-        .links-container {
+        /* Сетка для карточек */
+        .grid {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1100px;
+            width: 90%;
         }
 
-        .link-btn {
-            display: block;
-            padding: 12px;
-            background-color: #21262d;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #58a6ff;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease-in-out;
+        /* Интерактивная карточка */
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            width: 280px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            /* Плавность для всех анимаций */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        border-color 0.3s, 
+                        box-shadow 0.3s;
         }
 
-        /* Эффект при наведении мышки на кнопку */
-        .link-btn:hover {
-            background-color: #1f6feb;
+        /* Иконка молнии */
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            color: #f8fafc;
+            margin: 0 0 10px 0;
+        }
+
+        /* Стандартный текст, видимый сразу */
+        .card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Скрытый блок с красивым всплывающим описанием */
+        .popup-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #0284c7, #0369a1);
             color: white;
-            border-color: #388bfd;
-            transform: translateY(-2px);
+            padding: 20px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border-radius: 14px 14px 0 0;
+            text-align: left;
+            
+            /* Изначально блок полностью скрыт внизу и невидим */
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.35s ease, opacity 0.3s ease;
+        }
+
+        /* --- ЭФФЕКТЫ ПРИ НАВЕДЕНИИ (HOVER) --- */
+
+        /* 1. Карточка приподнимается и начинает светиться */
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #38bdf8;
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.25);
+        }
+
+        /* 2. Иконка внутри карточки слегка покачивается */
+        .card:hover .icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* 3. Плавно выдвигаем скрытый блок снизу вверх */
+        .card:hover .popup-info {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Ваша крутая иконка-аватар -->
-        <div class="avatar">IZ</div>
+    <header>
+        <h1>Качество электроэнергии</h1>
+        <p class="subtitle">Наведите на карточку параметра, чтобы узнать детали скрытой угрозы для сети</p>
+    </header>
+
+    <div class="grid">
         
-        <h1>izamuyoshi</h1>
-        <p class="subtitle">Добро пожаловать на мою первую веб-страницу!</p>
-        
-        <!-- Блок со ссылками -->
-        <div class="links-container">
-            <a href="https://github.com" target="_blank" class="link-btn">Мой GitHub профиль</a>
-            <a href="#" class="link-btn">Мой Telegram (замените ссылку)</a>
-            <a href="#" class="link-btn">Второй проект (скоро будет)</a>
+        <!-- Карточка 1 -->
+        <div class="card">
+            <div class="icon" style="color: #ef4444;">⚡</div>
+            <h2>Провалы напряжения</h2>
+            <p>Внезапное падение напряжения ниже 90% от номинала.</p>
+            
+            <!-- Красиво всплывающая подсказка -->
+            <div class="popup-info">
+                <strong>Чем опасно:</strong><br>
+                Вызывает сбои в работе компьютеров, отключение контакторов и остановку конвейеров на производстве. Из-за этого летит автоматика.
+            </div>
         </div>
+
+        <!-- Карточка 2 -->
+        <div class="card">
+            <div class="icon" style="color: #f59e0b;">📈</div>
+            <h2>Высшие гармоники</h2>
+            <p>Искажение синусоиды тока нелинейными нагрузками.</p>
+            
+            <!-- Красиво всплывающая подсказка -->
+            <div class="popup-info">
+                <strong>Причина и вред:</strong><br>
+                Появляются из-за блоков питания, частотников и LED-ламп. Перегревают трансформаторы и кабели, вызывают ложные срабатывания защиты.
+            </div>
+        </div>
+
+        <!-- Карточка 3 -->
+        <div class="card">
+            <div class="icon" style="color: #10b981;">🔄</div>
+            <h2>Небаланс фаз</h2>
+            <p>Неравномерное распределение нагрузок по трем фазам.</p>
+            
+            <!-- Красиво всплывающая подсказка -->
+            <div class="popup-info">
+                <strong>Последствия:</strong><br>
+                Приводит к возникновению токов в нулевом проводе. Электродвигатели начинают сильно греться, падает их КПД и сокращается срок службы.
+            </div>
+        </div>
+
     </div>
 
 </body>
