@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>izamuyoshi | Официальный сайт</title>
+    <style>
+        /* Базовые настройки для всей страницы */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0d1117; /* Темный фон в стиле GitHub */
+            color: #c9d1d9; /* Светло-серый текст */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Контейнер-карточка по центру */
+        .container {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Аватарка или круглая заглушка */
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #1f6feb, #238636);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #f0f6fc;
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            color: #8b949e;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        /* Стили для кнопок-ссылок */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-btn {
+            display: block;
+            padding: 12px;
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #58a6ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Эффект при наведении мышки на кнопку */
+        .link-btn:hover {
+            background-color: #1f6feb;
+            color: white;
+            border-color: #388bfd;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Ваша крутая иконка-аватар -->
+        <div class="avatar">IZ</div>
+        
+        <h1>izamuyoshi</h1>
+        <p class="subtitle">Добро пожаловать на мою первую веб-страницу!</p>
+        
+        <!-- Блок со ссылками -->
+        <div class="links-container">
+            <a href="https://github.com" target="_blank" class="link-btn">Мой GitHub профиль</a>
+            <a href="#" class="link-btn">Мой Telegram (замените ссылку)</a>
+            <a href="#" class="link-btn">Второй проект (скоро будет)</a>
+        </div>
+    </div>
+
+</body>
+</html>
