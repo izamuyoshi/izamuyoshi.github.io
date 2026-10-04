@@ -5,27 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Качество электроэнергии | Мониторинг</title>
     <style>
-        /* Общие стили и футуристичный темный фон */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
             color: #e2e8f0;
             margin: 0;
-            padding: 0;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
         header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 20px;
         }
 
-        /* Светящийся заголовок */
         h1 {
             color: #38bdf8;
             font-size: 2.5rem;
@@ -38,17 +35,17 @@
             font-size: 1.1rem;
         }
 
-        /* Сетка для карточек */
+        /* Карточки параметров */
         .grid {
             display: flex;
             gap: 25px;
             flex-wrap: wrap;
             justify-content: center;
             max-width: 1100px;
-            width: 90%;
+            width: 100%;
+            margin-bottom: 50px;
         }
 
-        /* Интерактивная карточка */
         .card {
             background: rgba(30, 41, 59, 0.7);
             border: 1px solid rgba(56, 189, 248, 0.2);
@@ -60,13 +57,9 @@
             overflow: hidden;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            /* Плавность для всех анимаций */
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        border-color 0.3s, 
-                        box-shadow 0.3s;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
         }
 
-        /* Иконка молнии */
         .icon {
             font-size: 2.5rem;
             margin-bottom: 15px;
@@ -80,14 +73,12 @@
             margin: 0 0 10px 0;
         }
 
-        /* Стандартный текст, видимый сразу */
         .card p {
             color: #94a3b8;
             font-size: 0.95rem;
             line-height: 1.4;
         }
 
-        /* Скрытый блок с красивым всплывающим описанием */
         .popup-info {
             position: absolute;
             bottom: 0;
@@ -100,31 +91,110 @@
             line-height: 1.5;
             border-radius: 14px 14px 0 0;
             text-align: left;
-            
-            /* Изначально блок полностью скрыт внизу и невидим */
             transform: translateY(100%);
             opacity: 0;
             transition: transform 0.35s ease, opacity 0.3s ease;
         }
 
-        /* --- ЭФФЕКТЫ ПРИ НАВЕДЕНИИ (HOVER) --- */
-
-        /* 1. Карточка приподнимается и начинает светиться */
         .card:hover {
             transform: translateY(-10px);
             border-color: #38bdf8;
             box-shadow: 0 15px 30px rgba(56, 189, 248, 0.25);
         }
 
-        /* 2. Иконка внутри карточки слегка покачивается */
-        .card:hover .icon {
-            transform: scale(1.1) rotate(10deg);
+        .card:hover .icon { transform: scale(1.1) rotate(10deg); }
+        .card:hover .popup-info { transform: translateY(0); opacity: 1; }
+
+        /* --- БЛОК С ИНТЕРАКТИВНЫМ КАЛЬКУЛЯТОРОМ --- */
+        .analyzer-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+            text-align: center;
+            box-sizing: border-box;
         }
 
-        /* 3. Плавно выдвигаем скрытый блок снизу вверх */
-        .card:hover .popup-info {
-            transform: translateY(0);
-            opacity: 1;
+        .analyzer-box h2 {
+            margin-top: 0;
+            color: #f8fafc;
+            font-size: 1.6rem;
+        }
+
+        .input-group {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Красивое поле ввода */
+        input[type="number"] {
+            background: #0f172a;
+            border: 2px solid #475569;
+            border-radius: 10px;
+            padding: 12px;
+            color: white;
+            font-size: 1.4rem;
+            width: 120px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .unit {
+            font-size: 1.4rem;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+
+        /* Стильная кнопка анализа */
+        .btn-analyze {
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn-analyze:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+        }
+
+        .btn-analyze:active { transform: translateY(0); }
+
+        /* Поле вывода результата анализа */
+        .result-display {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            display: none; /* Изначально скрыто */
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -132,51 +202,92 @@
 
     <header>
         <h1>Качество электроэнергии</h1>
-        <p class="subtitle">Наведите на карточку параметра, чтобы узнать детали скрытой угрозы для сети</p>
+        <p class="subtitle">Наведите на карточку, чтобы узнать детали угроз, или проверьте свою сеть ниже</p>
     </header>
 
+    <!-- Сетка карточек -->
     <div class="grid">
-        
-        <!-- Карточка 1 -->
         <div class="card">
             <div class="icon" style="color: #ef4444;">⚡</div>
             <h2>Провалы напряжения</h2>
             <p>Внезапное падение напряжения ниже 90% от номинала.</p>
-            
-            <!-- Красиво всплывающая подсказка -->
             <div class="popup-info">
-                <strong>Чем опасно:</strong><br>
-                Вызывает сбои в работе компьютеров, отключение контакторов и остановку конвейеров на производстве. Из-за этого летит автоматика.
+                <strong>Чем опасно:</strong><br>Вызывает мгновенные сбои автоматики, отключение контакторов и зависание серверов.
             </div>
         </div>
 
-        <!-- Карточка 2 -->
         <div class="card">
             <div class="icon" style="color: #f59e0b;">📈</div>
             <h2>Высшие гармоники</h2>
             <p>Искажение синусоиды тока нелинейными нагрузками.</p>
-            
-            <!-- Красиво всплывающая подсказка -->
             <div class="popup-info">
-                <strong>Причина и вред:</strong><br>
-                Появляются из-за блоков питания, частотников и LED-ламп. Перегревают трансформаторы и кабели, вызывают ложные срабатывания защиты.
+                <strong>Причина и вред:</strong><br>Возникают из-за частотников и импульсных блоков питания. Перегревают кабели и технику.
             </div>
         </div>
 
-        <!-- Карточка 3 -->
         <div class="card">
             <div class="icon" style="color: #10b981;">🔄</div>
             <h2>Небаланс фаз</h2>
             <p>Неравномерное распределение нагрузок по трем фазам.</p>
-            
-            <!-- Красиво всплывающая подсказка -->
             <div class="popup-info">
-                <strong>Последствия:</strong><br>
-                Приводит к возникновению токов в нулевом проводе. Электродвигатели начинают сильно греться, падает их КПД и сокращается срок службы.
+                <strong>Последствия:</strong><br>Токи уходят в нулевой провод, мощные трехфазные двигатели начинают гудеть, теряют мощность и горят.
             </div>
         </div>
-
     </div>
+
+    <!-- Интерактивный калькулятор -->
+    <div class="analyzer-box">
+        <h2>📊 Экспресс-анализатор сети</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem;">Введите текущее напряжение в розетке для проверки по ГОСТ</p>
+        
+        <div class="input-group">
+            <input type="number" id="voltageInput" value="220" min="0" max="450">
+            <span class="unit">Вольт</span>
+        </div>
+
+        <button class="btn-analyze" onclick="analyzeVoltage()">Проверить качество</button>
+
+        <!-- Сюда скрипт выведет ответ -->
+        <div class="result-display" id="resultDisplay"></div>
+    </div>
+
+    <!-- Логика работы на JavaScript -->
+    <script>
+        function analyzeVoltage() {
+            const v = parseFloat(document.getElementById('voltageInput').value);
+            const display = document.getElementById('resultDisplay');
+            
+            // Если ввели ерунду или пустоту
+            if (isNaN(v) || v <= 0) {
+                display.style.display = 'block';
+                display.style.border = '1px solid #ef4444';
+                display.style.color = '#f87171';
+                display.innerHTML = '❌ Пожалуйста, введите корректное числовое значение напряжения.';
+                return;
+            }
+
+            display.style.display = 'block';
+
+            // Логика проверки по стандартам ГОСТ (номинал 230В, допустимо +-10%: от 207В до 253В)
+            if (v >= 207 && v <= 253) {
+                display.style.border = '1px solid #10b981';
+                display.style.color = '#34d399';
+                display.innerHTML = `<strong>🟢 Напряжение в норме (${v} В)</strong><br>Отклонение соответствует ГОСТ 32144-2013. Ваша бытовая техника в полной безопасности.`;
+            } else if (v < 207 && v >= 190) {
+                display.style.border = '1px solid #f59e0b';
+                display.style.color = '#fbbf24';
+                display.innerHTML = `<strong>🟡 Пониженное напряжение (${v} В)</strong><br>Превышает нормально допустимые нормы. Техника (особенно холодильники и насосы) может работать на износ или не запускаться.`;
+            } else if (v < 190) {
+                display.style.border = '1px solid #ef4444';
+                display.style.color = '#f87171';
+                display.innerHTML = `<strong>🔴 Критический провал! (${v} В)</strong><br>Опасный уровень напряжения. Высокий риск аварийного отключения блоков питания и повреждения электродвигателей.`;
+            } else {
+                display.style.border = '1px solid #ef4444';
+                display.style.color = '#f87171';
+                display.innerHTML = `<strong>🔴 Опасное перенапряжение (${v} В)</strong><br>Критический уровень! Электронные платы, блоки питания ПК и техника могут мгновенно сгореть. Срочно используйте стабилизатор!`;
+            }
+        }
+    </script>
 
 </body>
 </html>
