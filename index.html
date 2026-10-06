@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Моё радио</title>
+    <title>Internet Radio</title>
 
     <style>
         * {
@@ -25,21 +25,27 @@
         .radio {
             width: 90%;
             max-width: 500px;
-            padding: 40px;
+            padding: 45px 35px;
             text-align: center;
-            background: #1d1d1d;
+            background: #1e1e1e;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 50px rgba(0,0,0,.5);
         }
 
         h1 {
-            margin: 0 0 10px;
+            margin: 0;
             font-size: 32px;
         }
 
-        .status {
+        .station {
+            margin-top: 10px;
             color: #aaa;
-            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .status {
+            margin: 25px 0;
+            color: #aaa;
         }
 
         button {
@@ -49,32 +55,26 @@
             border-radius: 50%;
             background: white;
             color: #111;
-            font-size: 32px;
+            font-size: 30px;
             cursor: pointer;
-            transition: 0.2s;
         }
 
         button:hover {
-            transform: scale(1.08);
-        }
-
-        button:active {
-            transform: scale(0.95);
+            transform: scale(1.06);
         }
 
         .volume {
-            width: 100%;
             margin-top: 30px;
         }
 
-        input[type="range"] {
+        input {
             width: 100%;
         }
 
         .volume-text {
-            color: #aaa;
-            font-size: 14px;
-            margin-top: 10px;
+            margin-top: 8px;
+            color: #888;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -83,20 +83,24 @@
 
 <div class="radio">
 
-    <h1>📻 Моё радио</h1>
+    <h1>📻 Internet Radio</h1>
+
+    <div class="station">
+        BBC World Service
+    </div>
 
     <div class="status" id="status">
         Радио выключено
     </div>
 
-    <button id="playButton" onclick="toggleRadio()">
+    <button id="playButton">
         ▶
     </button>
 
     <div class="volume">
         <input
-            type="range"
             id="volume"
+            type="range"
             min="0"
             max="1"
             step="0.01"
@@ -112,57 +116,70 @@
 
 <audio id="radio" preload="none">
     <source
-        src="YOUR_RADIO_STREAM_URL"
+        src="https://stream.live.vc.bbcmedia.co.uk/bbc_world_service"
         type="audio/mpeg"
     >
 </audio>
 
 <script>
 
-    const radio = document.getElementById("radio");
-    const button = document.getElementById("playButton");
-    const status = document.getElementById("status");
-    const volume = document.getElementById("volume");
+const radio = document.getElementById("radio");
+const button = document.getElementById("playButton");
+const status = document.getElementById("status");
+const volume = document.getElementById("volume");
 
-    radio.volume = 0.8;
+radio.volume = 0.8;
 
-    volume.addEventListener("input", function () {
-        radio.volume = this.value;
-    });
+button.addEventListener("click", async () => {
 
-    function toggleRadio() {
+    if (radio.paused) {
 
-        if (radio.paused) {
+        status.textContent = "Подключение...";
 
-            radio.play()
-                .then(() => {
-                    button.textContent = "⏸";
-                    status.textContent = "🔴 Радио играет";
-                })
-                .catch(() => {
-                    status.textContent = "Не удалось запустить радио";
-                });
+        try {
+            await radio.play();
 
-        } else {
+            button.textContent = "⏸";
+            status.textContent = "🔴 Радио играет";
 
-            radio.pause();
+        } catch (error) {
 
-            button.textContent = "▶";
-            status.textContent = "Радио выключено";
+            console.error(error);
+
+            status.textContent =
+                "⚠ Не удалось подключиться к радио";
         }
+
+    } else {
+
+        radio.pause();
+
+        button.textContent = "▶";
+        status.textContent = "Радио выключено";
     }
+});
 
-    radio.addEventListener("waiting", function () {
-        status.textContent = "⏳ Подключение...";
-    });
+volume.addEventListener("input", () => {
+    radio.volume = volume.value;
+});
 
-    radio.addEventListener("playing", function () {
-        status.textContent = "🔴 Радио играет";
-    });
+radio.addEventListener("waiting", () => {
+    status.textContent = "⏳ Буферизация...";
+});
 
-    radio.addEventListener("error", function () {
-        status.textContent = "⚠ Ошибка подключения к радиостанции";
-    });
+radio.addEventListener("playing", () => {
+    button.textContent = "⏸";
+    status.textContent = "🔴 Радио играет";
+});
+
+radio.addEventListener("pause", () => {
+    button.textContent = "▶";
+});
+
+radio.addEventListener("error", () => {
+    status.textContent =
+        "⚠ Ошибка подключения к радиопотоку";
+});
 
 </script>
 
